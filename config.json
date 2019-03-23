@@ -1,0 +1,8 @@
+{
+    "endpoint_url": "http://localhost:9000",
+    "aws_access_key_id": "2IQYX9R1OCHK70Q10BB0",
+    "aws_secret_access_key": "JyXD9I36W8OIRlZtZs0VzUycl1o+3xVbVYUC1laq",
+    "signature_version": "s3v4",
+    "region_name": "us-east-1",
+    "bucket_name": "videos"
+}
