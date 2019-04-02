@@ -46,8 +46,19 @@ def load_config_file():
 def refresh_right_column():
     """ refresh right column in UI with bucket contents """
     WINDOW.list2.delete(0, END)
-    for index, value in enumerate(MAIN_MODEL.list_files()):
-        WINDOW.list2.insert(index, value.key)
+    index = 0
+    if MAIN_MODEL._remote_level != 0:
+        WINDOW.list2.insert(index, "..")
+        index += 1
+
+    for value in MAIN_MODEL.list_files():
+        print(value.key)
+        print(MAIN_MODEL._remote_prefix)
+        WINDOW.list2.insert(
+            index,
+            value.key.replace(MAIN_MODEL._remote_prefix, '')
+        )
+        index += 1
 
 
 def refresh_left_column(my_path):
@@ -85,7 +96,21 @@ def double_click_from_remote_to_local(event):
         load_config_file()
     remote_file = WINDOW.list2.get(ACTIVE)
     print(WINDOW.list2.get(ACTIVE))
-    MAIN_MODEL.download(remote_file, PATH + "/" + remote_file)
+
+    if '..' == remote_file:
+        MAIN_MODEL.go_up()
+        refresh_right_column()
+        return
+
+    if '/' in remote_file:
+        MAIN_MODEL.go_to(remote_file)
+        refresh_right_column()
+        return
+
+    MAIN_MODEL.download(
+        MAIN_MODEL._remote_prefix + "/" + remote_file,
+        PATH + "/" + remote_file
+    )
 
     refresh_left_column(PATH)
     messagebox.showinfo(
@@ -113,7 +138,7 @@ WINDOW.frame1 = FRAME1
 FRAME1.grid(row=0, column=0, sticky=N+S+E+W)
 
 # list
-PATH = "/home/lonclegr"
+PATH = os.environ.get('HOME', '/tmp')
 LIST1 = Listbox(FRAME1)
 
 LIST1.bind('<Double-Button-1>', double_click_from_local_to_remote)

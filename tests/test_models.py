@@ -2,6 +2,7 @@
 
 from models.models import MainModel
 
+
 def test_init_main_model():
     """ test init method for MainModel """
     my_object = MainModel()

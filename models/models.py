@@ -13,6 +13,8 @@ class MainModel():
         """ constructor """
         self._config = None
         self._bucket = None
+        self._remote_prefix = ''
+        self._remote_level = 0
 
     def get_config(self, config_file=False):
         """ get config and store it """
@@ -51,7 +53,10 @@ class MainModel():
 
     def upload(self, local_path, remote_filename):
         """ upload local file to remote server """
-        self.get_bucket().upload_file(local_path, remote_filename)
+        self.get_bucket().upload_file(
+            local_path,
+            self._remote_prefix + '/' + remote_filename
+        )
 
     def download(self, remote_filename, local_path):
         """ download remote file to local """
@@ -59,4 +64,20 @@ class MainModel():
 
     def list_files(self):
         """ get all files from bucket """
-        return self.get_bucket().objects.all()
+        if self._remote_level == 0:
+            return self.get_bucket().objects.all()
+        return self.get_bucket().objects.filter(Prefix=self._remote_prefix)
+
+    def go_up(self):
+        """ go up into remote tree """
+        self._remote_prefix = "/".join(
+            self._remote_prefix.split('/')[:-2]
+        ) + "/"
+        self._remote_level -= 1
+        if self._remote_level == 0:
+            self._remote_prefix = ''
+
+    def go_to(self, prefix):
+        """ go to remote tree prefix """
+        self._remote_level += 1
+        self._remote_prefix += prefix.split("/")[0] + "/"

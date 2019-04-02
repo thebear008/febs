@@ -74,6 +74,8 @@ Run this command :
 
 ```
 python3 run.py
+# custom HOME for left column
+HOME=/tmp python3 run.py
 ```
 
 ## Features
