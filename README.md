@@ -99,3 +99,20 @@ tests/test_models.py .                                                          
 
 =========================================================================== 1 passed in 0.22 seconds ===========================================================================
 ```
+
+## Model Features
+
+1. Copy bucket
+
+Example
+
+```
+# coding: utf-8
+
+from models.models import MainModel
+videos = MainModel()
+videos.get_config('config.json')
+toto = MainModel()
+toto.get_config('config2.json')
+videos.copy_bucket_to(toto)
+```
