@@ -117,9 +117,10 @@ class MainModel():
         self._remote_level += 1
         self._remote_prefix += prefix.split("/")[0] + "/"
 
-    def copy_bucket_to(self, other_model):
+    def copy_bucket_to(self, other_model, limit_file_size=0):
         """
             we want to copy all objects from this bucket to the other one
+            we can restrict list to files with max size
         """
 
         logger.info(f'Copying objects from {self} to {other_model}')
@@ -131,10 +132,18 @@ class MainModel():
         # get only discrepancies
         logger.info('Computing discrepancies')
         other_model_objects = [y.key for y in other_model.list_files()]
-        discrepancies = [
-            x.key for x in self.list_files()
-            if x.key not in other_model_objects
-        ]
+        if limit_file_size != 0:
+            logger.info(f'Getting only files with size < {limit_file_size}')
+            discrepancies = [
+                x.key for x in self.list_files()
+                if x.key not in other_model_objects
+                and x.size < limit_file_size
+            ]
+        else:
+            discrepancies = [
+                x.key for x in self.list_files()
+                if x.key not in other_model_objects
+            ]
         logger.info(f'Got {len(discrepancies)} discrepancies')
 
         for my_key in discrepancies:

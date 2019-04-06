@@ -115,4 +115,5 @@ videos.get_config('config.json')
 toto = MainModel()
 toto.get_config('config2.json')
 videos.copy_bucket_to(toto)
+videos.copy_bucket_to(toto, 1 * 1024 * 1024)  # copy only files under 1MB
 ```
