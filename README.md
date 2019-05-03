@@ -88,16 +88,42 @@ HOME=/tmp python3 run.py
 Just execute
 
 ```
-pytest
-============================================================================= test session starts ==============================================================================
-platform linux -- Python 3.6.6, pytest-4.3.1, py-1.8.0, pluggy-0.9.0
-rootdir: /home/lonclegr/workspace/sandbox/febs, inifile:
+pytest --cov=core --cov=models --cov=views tests/
+======================================================================================== test session starts =========================================================================================
+platform linux -- Python 3.6.6, pytest-4.4.1, py-1.8.0, pluggy-0.9.0
+rootdir: /home/lonclegr/workspace/github/febs
 plugins: cov-2.6.1
 collected 1 item
 
-tests/test_models.py .                                                                                                                                                   [100%]
+tests/test_models.py .                                                                                                                                                                         [100%]
 
-=========================================================================== 1 passed in 0.22 seconds ===========================================================================
+----------- coverage: platform linux, python 3.6.6-final-0 -----------
+Name                 Stmts   Miss  Cover
+----------------------------------------
+core/__init__.py         0      0   100%
+core/exceptions.py       7      2    71%
+core/logger.py          16      2    88%
+models/__init__.py       0      0   100%
+models/models.py        82     59    28%
+views/__init__.py        0      0   100%
+views/views.py          84     84     0%
+----------------------------------------
+TOTAL                  189    147    22%
+
+
+====================================================================================== 1 passed in 0.32 seconds ======================================================================================
+coverage report -m
+Name                 Stmts   Miss  Cover   Missing
+--------------------------------------------------
+core/__init__.py         0      0   100%
+core/exceptions.py       7      2    71%   8-10
+core/logger.py          16      2    88%   20, 26
+models/__init__.py       0      0   100%
+models/models.py        82     59    28%   24, 31-44, 48-66, 70-79, 86-87, 91-95, 99-100, 105-111, 116-118, 126-156
+views/__init__.py        0      0   100%
+views/views.py          84     84     0%   2-156
+--------------------------------------------------
+TOTAL                  189    147    22%
 ```
 
 ## Model Features
